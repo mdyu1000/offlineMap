@@ -11,17 +11,30 @@
 </head>
 <body>
 	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div id="map" style="width: 100%; height: 600px">
-					<img id="marker" src="http://localhost/googleOverLayMap/asset/marker.png" style="position: relative; top: 24px; z-index: 1">
-				
+		<div class="row mt-3">
+			<div class="col-4">
+				<span>Latitude : </span>
+				<input type="number" name="Latitude" id="Latitude" value=25.093133>
+			</div>
+			<div class="col-4">
+				<span>Longitude : </span>
+				<input type="number" name="Longitude" id="Longitude" value="121.537912">
+			</div>
+			<div class="col-4 my-auto">
+				<div class="text-center">
+					<button type="button" class="btn btn-success" id="submitBtn">submit</button>
 				</div>
+			</div>
+			<div class="col-12">
+				<div id="map" class="w-100 mt-2" style="height: 600px"></div>
 			</div>
 		</div>
 	</div>
 
 </body>
+	<!--  Global Mercator  -->
+	<script src="http://localhost/googleOverLayMap/js/mercator/global-mercator.js"></script>
+	
 	<!-- Mapbox -->
 	<link rel="stylesheet" href="http://localhost/googleOverLayMap/css/mapboxGL.css" >
 	<script type="text/javascript" src='http://localhost/googleOverLayMap/js/mapboxGL.js'></script>

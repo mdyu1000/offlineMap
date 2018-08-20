@@ -5,10 +5,10 @@ const request = require('request');
 const mkdirp = require('mkdirp');
 
 const url = "http://c.tile.openstreetmap.org"
-const LIMIT_ZOOM = 16
+const LIMIT_ZOOM = 9
 const START_ZOOM = 9
-const START_X = 51
-const START_Y = 90
+const START_X = 312
+const START_Y = 290
 
 app.get('/', function (req, res) {
   return res.status(200).send('google offline image crawler ready to serve');
@@ -33,7 +33,7 @@ function getGoogleOfflineImage(zoom, x, y, res) {
 			let imageStream = response.pipe(image)
 
 			imageStream.on('finish', () => {
-				// console.log(`save ${zoom}/${x}/${y}.png okay`)
+				console.log(`save ${zoom}/${x}/${y}.png okay`)
 
 				if(zoom == 0 && x == 0 && y == 0){
 					getGoogleOfflineImage(zoom + 1, 0, 0, res)
@@ -55,6 +55,6 @@ function getGoogleOfflineImage(zoom, x, y, res) {
 
 }
 
-app.listen(process.env.PORT || 4000, function () {
+app.listen(process.env.PORT || 3000, function () {
   console.log('google offline image crawler ready');
 });

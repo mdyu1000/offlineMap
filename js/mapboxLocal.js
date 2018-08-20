@@ -1,4 +1,18 @@
   // mapboxgl.accessToken = 'pk.eyJ1Ijoiazd5dSIsImEiOiJjamthaDBpbmcyYmNxM2tuY2lmdnoxc2J3In0.0B2spvUULNIenp_9fXg41g';
+const submitBtn = document.getElementById("submitBtn")
+const inputLat = document.getElementById("Latitude")
+const inputLng = document.getElementById("Longitude")
+const inputZoom = document.getElementById("zoom")
+
+const marker = document.getElementById("marker")
+const markerWidth = 24
+
+const mapbox = document.getElementById("map")
+const mapWidth = mapbox.clientWidth
+const mapHeight = mapbox.clientHeight
+
+const TILE_SIDE_LENGTH = 256
+const MAX_ZOOM = 8
 
 var map = new mapboxgl.Map({
   container: 'map',
@@ -28,7 +42,10 @@ var map = new mapboxgl.Map({
     ],
   },
   "center": [121.398220, 25.144707],
-  "maxZoom": 8,
+  // "center": [-70.130385, 39.942069],
+  "maxZoom": MAX_ZOOM,
+  "minZoom": 0,
+  "zoom": 4,
 });
 
 map.on('load', () => {
@@ -60,7 +77,6 @@ map.on('load', () => {
     }
   });
 
-  // 添加图层，使得上面的数据源里面的数据可视化
   map.addLayer({
     "id": "points",
     "type": "symbol",
@@ -73,6 +89,59 @@ map.on('load', () => {
       "text-anchor": "top"
     }
   });
+
+})
+    
+// function long2tile(lon,zoom) { return (Math.floor((lon+180)/360*Math.pow(2,zoom))); }
+// function lat2tile(lat,zoom)  { return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom))); }
+
+submitBtn.addEventListener("click", () => {
+  let lat = Number(inputLat.value)
+  let lng = Number(inputLng.value)
+
+  // let resultX = long2tile(lng, currentZoom)
+  // let resultY = lat2tile(lat, currentZoom)
+
+  if(lat == ""){
+    alert("lat can't be empty")
+  }else if(lng == ""){
+    alert("lng can't be empty")
+  }else{
+    let imgSrc = `${location.origin}${location.pathname}asset/marker.png`
+
+    if(map.hasImage("marker")){
+      map.removeImage("marker")
+      map.removeLayer("marker")
+      map.removeSource("marker")
+    }
+
+    map.loadImage(imgSrc, function(error, image) {
+      if (error) throw error;
+      map.addImage('marker', image);
+      map.addLayer({
+        "id": "marker",
+        "type": "symbol",
+        "source": {
+          "type": "geojson",
+          "data": {
+            "type": "FeatureCollection",
+            "features": [{
+              "type": "Feature",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [lng, lat]
+              }
+            }]
+          }
+        },
+        "layout": {
+          "icon-image": "marker",
+          "icon-size": 1
+        }
+      });
+    });
+  
+  }
 })
 
 
